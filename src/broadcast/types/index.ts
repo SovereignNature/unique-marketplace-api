@@ -1,22 +1,17 @@
-import { Server } from "socket.io";
+import { Server, Socket } from "socket.io";
 
-export type ServerToClientEvents = {
-  messageWithoutPayload: () => void;
-  messageWithAcknowledgement: (text: string, callback: (answer: number) => void) => void;
-  notification: (payload: any) => void;
-}
-
-export type ClientToServerEvents = {
-  joinRoom: (roomName: string) => void;
-  leaveRoom: (roomName: string) => void;
+type ServerToClientEvents = {
+  notification: (...payload: any[]) => void;
 };
 
-export interface InterServerEvents {
-  ping: () => void;
-}
+type ClientToServerEvents = {
+  subscribeTo: (room: string) => void;
+  unsubscribeFrom: (room: string) => void;
+};
 
-export interface SocketData {
-  userId: string;
-}
+type InterServerEvents = Record<string, never>;
 
-export type BroadcastWebSocketServer = Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>
+type SocketData = Record<string, never>;
+
+export type BroadcastIOServer = Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>
+export type BroadcastIOSocket = Socket<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>
